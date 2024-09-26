@@ -71,7 +71,7 @@ def get_data():
 #     prevent_initial_call=True,
 #     running=[(Input('update-button', 'disabled'), True, False)]
 # )
-# def store_data(n_clicks):
+# def store_and_update_table(n_clicks):
 #     # Log to terminal
 #     print(f"{get_timestamp()}\tstore_data()\tn_clicks={n_clicks}\ttriggered_id={ctx.triggered_id}")
 #     if n_clicks == 0:
