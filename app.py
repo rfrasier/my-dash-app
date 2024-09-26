@@ -63,6 +63,26 @@ def get_data():
 
 
 # Callbacks
+# TODO: Uncomment this callback, which tries to combine the bottom two, and comment out the bottom two in order to see the error: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+# @callback(
+#     Output('data-storage', 'data'),
+#     Output('table-component', 'children'),
+#     Input('update-button', 'n_clicks'),
+#     prevent_initial_call=True,
+#     running=[(Input('update-button', 'disabled'), True, False)]
+# )
+# def store_data(n_clicks):
+#     # Log to terminal
+#     print(f"{get_timestamp()}\tstore_data()\tn_clicks={n_clicks}\ttriggered_id={ctx.triggered_id}")
+#     if n_clicks == 0:
+#         raise PreventUpdate
+#     df = get_data()
+#     df.reset_index(drop=True, inplace=True)
+#     data = df.to_dict('records')
+#     component = create_table_component(df)
+#     return data, component
+
+
 @callback(
     Output('data-storage', 'data'),
     Input('update-button', 'n_clicks'),
