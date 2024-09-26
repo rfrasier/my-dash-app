@@ -3,6 +3,7 @@ from dash.exceptions import PreventUpdate
 from dash.dash_table import DataTable
 import dash_bootstrap_components as dbc
 import pandas as pd
+import datetime as dt
 
 
 # Configuration global variables
@@ -50,6 +51,11 @@ def create_table_component(df: pd.DataFrame) -> html.Div:
     return component
 
 
+# Utility functions
+def get_timestamp():
+    return dt.datetime.now()
+
+
 # Data functions
 def get_data():
     df = pd.read_csv('data.csv')
@@ -59,19 +65,35 @@ def get_data():
 # Callbacks
 @callback(
     Output('data-storage', 'data'),
-    Output('table-component', 'children'),
     Input('update-button', 'n_clicks'),
     prevent_initial_call=True,
     running=[(Input('update-button', 'disabled'), True, False)]
 )
-def update_table_component(n_clicks):
+def store_data(n_clicks):
+    # Log to terminal
+    print(f"{get_timestamp()}\tstore_data()\tn_clicks={n_clicks}\ttriggered_id={ctx.triggered_id}")
     if n_clicks == 0:
         raise PreventUpdate
     df = get_data()
+    print(df)
     df.reset_index(drop=True, inplace=True)
     data = df.to_dict('records')
+    return data
+
+
+@callback(
+    Output('table-component', 'children'),
+    Input('data-storage', 'modified_timestamp'),
+    State('data-storage', 'data')
+)
+def update_table(modified_timestamp, data):
+    # Log to terminal
+    print(f"{get_timestamp()}\tupdate_table()\tmodified_timestamp={modified_timestamp}\ttriggered_id={ctx.triggered_id}")
+    if data is None:
+        raise PreventUpdate
+    df = pd.DataFrame(data)
     component = create_table_component(df)
-    return data, component
+    return component
 
 
 # Layout
