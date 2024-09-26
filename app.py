@@ -75,7 +75,6 @@ def store_data(n_clicks):
     if n_clicks == 0:
         raise PreventUpdate
     df = get_data()
-    print(df)
     df.reset_index(drop=True, inplace=True)
     data = df.to_dict('records')
     return data
